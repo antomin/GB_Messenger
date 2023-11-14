@@ -132,3 +132,5 @@ dmypy.json
 .idea/
 test.py
 *.sqlite3_backup
+logs/log_files/*
+!logs/log_files/.gitkeep

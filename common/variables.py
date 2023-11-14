@@ -1,3 +1,5 @@
+import os
+
 DEFAULT_PORT = 7777
 DEFAULT_HOST = '127.0.0.1'
 MAX_CONNECTIONS = 5
@@ -11,3 +13,5 @@ ACCOUNT_NAME = 'account_name'
 PRESENCE = 'presence'
 RESPONSE = 'response'
 ERROR = 'error'
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
