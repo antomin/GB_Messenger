@@ -5,8 +5,10 @@ import sys
 
 from common.variables import (DEFAULT_HOST, DEFAULT_PORT, ENCODING,
                               MAX_PACKAGE_LENGTH)
+from decos import log
 
 
+@log
 def get_args() -> tuple:
     parser = argparse.ArgumentParser()
 
@@ -29,6 +31,7 @@ def get_args() -> tuple:
         sys.exit(1)
 
 
+@log
 def get_message(sock: socket.socket) -> dict:
     raw_response = sock.recv(MAX_PACKAGE_LENGTH)
     if isinstance(raw_response, bytes):

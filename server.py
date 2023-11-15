@@ -6,11 +6,13 @@ from common.utils import get_args, get_message, send_message
 from common.variables import (ACCOUNT_NAME, ACTION, ERROR, MAX_PACKAGE_LENGTH,
                               PRESENCE, RESPONSE, TIME, USER)
 import logs.config_files.server_config
+from decos import log
 from exceptions import IncorrectDataReceivedError
 
 LOG = logging.getLogger('server')
 
 
+@log
 def process_client_message(message: dict) -> dict:
     if ACTION in message and message[ACTION] == PRESENCE and TIME in message and USER in message and \
             message[USER][ACCOUNT_NAME] == 'Guest':

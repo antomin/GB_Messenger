@@ -14,5 +14,3 @@ class ReqFieldMissingError(Exception):
 
     def __str__(self):
         return f'Отсутствуют обязательные поля: <{", ".join(self.missing_fields)}>'
-
-

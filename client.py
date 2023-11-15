@@ -9,11 +9,13 @@ import logs.config_files.client_config
 from common.utils import get_args, get_message, send_message
 from common.variables import (ACCOUNT_NAME, ACTION, ERROR, PRESENCE, RESPONSE,
                               TIME, USER)
+from decos import log
 from exceptions import ReqFieldMissingError
 
 LOG = logging.getLogger('client')
 
 
+@log
 def create_presence(account_name='Guest') -> dict:
     result = {
         ACTION: PRESENCE,
@@ -28,6 +30,7 @@ def create_presence(account_name='Guest') -> dict:
     return result
 
 
+@log
 def process_answer(message: dict) -> str:
     if RESPONSE in message:
         if message[RESPONSE] == 200:
