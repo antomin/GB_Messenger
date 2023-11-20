@@ -13,5 +13,8 @@ ACCOUNT_NAME = 'account_name'
 PRESENCE = 'presence'
 RESPONSE = 'response'
 ERROR = 'error'
+MESSAGE = 'message'
+SENDER = 'sender'
+MESSAGE_TEXT = 'message_text'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))

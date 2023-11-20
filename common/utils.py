@@ -14,15 +14,16 @@ def get_args() -> tuple:
 
     parser.add_argument('-a', dest='addr', required=False, default=DEFAULT_HOST)
     parser.add_argument('-p', dest='port', required=False, default=DEFAULT_PORT)
+    parser.add_argument('-m', dest='mode', required=False, default='')
 
     args = parser.parse_args()
 
     try:
-        addr, port = args.addr, int(args.port)
+        addr, port, mode = args.addr, int(args.port), args.mode
         socket.inet_aton(addr)
         if port < 1024 or port > 65535:
             raise ValueError
-        return addr, port
+        return addr, port, mode
     except ValueError:
         print('Wrong port number.')
         sys.exit(1)
