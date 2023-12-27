@@ -2,6 +2,9 @@ import argparse
 import json
 import socket
 import sys
+import subprocess
+from ipaddress import ip_address
+from pprint import pprint
 
 from common.variables import (DEFAULT_HOST, DEFAULT_PORT, ENCODING,
                               MAX_PACKAGE_LENGTH)
@@ -48,3 +51,24 @@ def send_message(sock: socket.socket, message: dict) -> None:
     json_message = json.dumps(message)
     raw_message = json_message.encode(ENCODING)
     sock.send(raw_message)
+
+
+def host_ping(hosts: list) -> None:
+    result = {'available': [], 'not_available': []}
+
+    for host in hosts:
+        try:
+            addr = ip_address(host)
+        except ValueError:
+            result['not_available'].append(host)
+            continue
+        proc = subprocess.Popen(f'ping {addr} -c 1 -t 3', shell=False, stdout=subprocess.PIPE)
+        if proc.returncode == 0:
+            result['available'].append(addr)
+        else:
+            result['not_available'].append(addr)
+
+    pprint(result)
+
+
+host_ping(['8.8.8.8', '9.9.9.9'])
