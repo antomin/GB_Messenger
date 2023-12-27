@@ -16,5 +16,7 @@ ERROR = 'error'
 MESSAGE = 'message'
 SENDER = 'sender'
 MESSAGE_TEXT = 'message_text'
+DESTINATION = 'destination'
+EXIT = 'exit'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
