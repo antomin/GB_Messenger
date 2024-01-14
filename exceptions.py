@@ -1,11 +1,11 @@
 class IncorrectDataReceivedError(Exception):
     def __str__(self):
-        return 'Некорректное сообщение от удалённого компьютера'
+        return "Некорректное сообщение от удалённого компьютера"
 
 
 class NonDictInputError(Exception):
     def __str__(self):
-        return 'Ожидается объект класса <dict>'
+        return "Ожидается объект класса <dict>"
 
 
 class ReqFieldMissingError(Exception):
