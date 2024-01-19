@@ -91,6 +91,7 @@ class Server(metaclass=ServerVerifier):
                 except Exception as error:
                     LOG.info(f"Client <{msg[DESTINATION]}> was disconnected: {error}")
                     self.clients.remove(self.names[msg[DESTINATION]])
+                    server_db.user_logout(msg[DESTINATION])
                     del self.names[msg[0]]
 
             self.messages.clear()

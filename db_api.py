@@ -26,7 +26,7 @@ class User(Base):
 class ActiveUsers(Base):
     __tablename__ = "active_users"
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("User.id"), unique=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True)
     ip: Mapped[str]
     port: Mapped[int]
     login_time: Mapped[datetime] = mapped_column(default=now())
@@ -35,7 +35,7 @@ class ActiveUsers(Base):
 class LoginHistory(Base):
     __tablename__ = "login_history"
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("User.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     ip: Mapped[str]
     port: Mapped[int]
     date_time: Mapped[datetime] = mapped_column(default=now())
