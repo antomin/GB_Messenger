@@ -20,3 +20,5 @@ DESTINATION = "destination"
 EXIT = "exit"
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+SERVER_DB_URL = f"sqlite:///{BASE_DIR}/server_db.sqlite3"

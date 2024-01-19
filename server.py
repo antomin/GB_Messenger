@@ -16,13 +16,17 @@ from common.variables import (
     PRESENCE,
     RESPONSE,
     SENDER,
+    SERVER_DB_URL,
     TIME,
     USER,
 )
+from db_api import ServerDatabase
 from descriptors import IPAddress, Port
 from metaclasses import ServerVerifier
 
 LOG = logging.getLogger("server")
+
+server_db = ServerDatabase(db_url=SERVER_DB_URL)
 
 
 class Server(metaclass=ServerVerifier):
@@ -92,15 +96,22 @@ class Server(metaclass=ServerVerifier):
             self.messages.clear()
 
     @staticmethod
-    def process_client_message(message: dict, client: socket, messages_lst: list, clients: list, names: dict) -> None:
+    def process_client_message(
+        message: dict, client: socket.socket, messages_lst: list, clients: list, names: dict
+    ) -> None:
         if ACTION in message and message[ACTION] == PRESENCE and TIME in message and USER in message:
             LOG.debug(f"Received presence message from account <{message[USER][ACCOUNT_NAME]}>")
             if message[USER][ACCOUNT_NAME] not in names.keys():
                 names[message[USER][ACCOUNT_NAME]] = client
+                client_ip, client_port = client.getpeername()
+                server_db.user_login(
+                    username=message[USER][ACCOUNT_NAME], ip_address=client_ip, port=client_port
+                )
                 send_message(sock=client, message={RESPONSE: 200})
             else:
                 send_message(
-                    sock=client, message={RESPONSE: 400, ERROR: f"Username <{message[USER][ACCOUNT_NAME]}> is busy"}
+                    sock=client,
+                    message={RESPONSE: 400, ERROR: f"Username <{message[USER][ACCOUNT_NAME]}> is busy"},
                 )
                 clients.remove(client)
                 client.close()
@@ -116,6 +127,7 @@ class Server(metaclass=ServerVerifier):
             messages_lst.append(message)
 
         elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
+            server_db.user_logout(username=message[ACCOUNT_NAME])
             clients.remove(names[message[ACCOUNT_NAME]])
             names[message[ACCOUNT_NAME]].close()
             del names[message[ACCOUNT_NAME]]
@@ -138,6 +150,10 @@ class Server(metaclass=ServerVerifier):
 
 def main() -> None:
     addr, port, _ = get_args()
+
+    server_db.create_all()
+    server_db.clear_active_users()
+
     server = Server(ip_address=addr, port=port)
     server.start()
 

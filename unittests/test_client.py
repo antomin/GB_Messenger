@@ -39,4 +39,6 @@ class TestCreatePresence(TestCase):
     def test_presence(self):
         presence = create_presence(account_name=self.account_name)
         presence[TIME] = self.time
-        self.assertEqual(presence, {ACTION: PRESENCE, TIME: self.time, USER: {ACCOUNT_NAME: self.account_name}})
+        self.assertEqual(
+            presence, {ACTION: PRESENCE, TIME: self.time, USER: {ACCOUNT_NAME: self.account_name}}
+        )
